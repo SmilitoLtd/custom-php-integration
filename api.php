@@ -2,7 +2,7 @@
 
 /**
  * This file represents an API running on your server.
- * This is overly simple but services as an example of what each endpoint should be doing.
+ * This is overly simple but serves as an example of what each endpoint should be doing.
  */
 require_once 'init.php';
 
