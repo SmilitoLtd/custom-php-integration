@@ -17,6 +17,7 @@ switch ($_GET['action']) {
             'email' => SMILITO_INTEGRATION_EMAIL,
             'password' => SMILITO_INTEGRATION_PASSWORD,
         ]);
+        curl_setopt( $ch, CURLOPT_POST, true );
         curl_setopt( $ch, CURLOPT_POSTFIELDS, $payload );
         curl_setopt( $ch, CURLOPT_HTTPHEADER, array('Content-Type:application/json'));
         curl_setopt( $ch, CURLOPT_RETURNTRANSFER, true );
