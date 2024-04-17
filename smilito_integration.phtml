@@ -1,0 +1,70 @@
+<?php
+// This file is expected to be imported as a partial, and for the $claim variable to have been defined.
+/**
+ * @var $claim bool
+ */
+?>
+<style>
+    /*
+        We can override integration styles here.
+        Speak to your Smilito contact to arrange a call - we're happy to assist.
+    */
+</style>
+<!-- This div will contain the rewards once they are loaded. -->
+<div id="smilito_integration"></div>
+
+<!-- This script sets up the integration and populates the div above. -->
+<script type="text/javascript">
+    // This will be executed once the remote script has been loaded.
+    function smilitoLoaded() {
+        if (window.Smilito && window.Smilito.init) {
+            const args = {
+                jwt: async () => {
+                    const url = '<?= backendUrl('login') ?>'
+                    const res = await fetch(url)
+                    const body = await res.json()
+                    if (!res.ok) {
+                        throw new Error('Failed to get Smilito JWT: ' + res.statusText + ': ' + body)
+                    }
+                    return body?.jwt || ''
+                },
+                basketValue: async () => {
+                    const url = '<?= backendUrl('basket-value') ?>'
+                    const res = await fetch(url)
+                    const body = await res.json()
+                    if (!res.ok) {
+                        throw new Error('Failed to get Smilito basket value: ' + res.statusText + ': ' + body)
+                    }
+                    return body?.basketValue || ''
+                },
+                basketId: async () => {
+                    const url = '<?= backendUrl('basket-id') ?>'
+                    const res = await fetch(url)
+                    const body = await res.json()
+                    if (!res.ok) {
+                        throw new Error('Failed to get Smilito basket id: ' + res.statusText + ': ' + body)
+                    }
+                    return body?.basketId || ''
+                },
+                callback: () => {
+                    window.Smilito.run({
+                        // Where do we want to populate the rewards into?
+                        targetSelector: '#smilito_integration',
+                        // Should a claim button be displayed?
+                        claim: <?= $claim ? 'true' : 'false'; ?>,
+                    })
+                },
+            }
+            try {
+                window.Smilito.init(args)
+            } catch (err) {
+                console.error('Smilito could not be initialised...', err)
+            }
+        } else {
+            console.error('Smilito could not be initialised... no init')
+        }
+    }
+</script>
+
+<!-- This loads in the integration script and calls the function above when loaded. -->
+<script defer type="module" src="https://typescript-integration.smilito.io/smilito-typescript-integration.js?ts=<?php echo date('ymdhi') ?>" onload="smilitoLoaded()"></script>
