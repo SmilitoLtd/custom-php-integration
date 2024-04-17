@@ -17,7 +17,7 @@ function postCheckoutRewards() {
 
 function integrationScript($claim) {
     ob_start();
-    $res = ob_get_clean();
     require 'smilito_integration.phtml';
+    $res = ob_get_clean();
     return $res;
 }
