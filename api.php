@@ -6,7 +6,6 @@
  */
 require_once 'init.php';
 
-$resp = null;
 switch ($_GET['action']) {
     case 'login':
         // This endpoint hits a Smilito API with your integration credentials and returns a JWT.
